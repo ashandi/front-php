@@ -1,0 +1,30 @@
+{
+    "name": "ashandi/front-php",
+    "description": "Package for creating frontend files as php classes. Replacement for template engines like a blade or twig",
+    "homepage": "https://github.com/ashandi/front-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Filichev",
+            "email": "filichev.kzn@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : ">=5.5.9"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ashandi\\FrontPHP\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ashandi\\FrontPHP\\Test\\": "tests"
+        }
+    },
+    "minimum-stability": "dev"
+}
