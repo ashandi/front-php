@@ -2,8 +2,10 @@
 
 namespace Ahandi\FrontPHP\Tests;
 
+use Ashandi\FrontPHP\Meta;
 use Ashandi\FrontPHP\View;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 class ViewTest extends TestCase
 {
@@ -36,6 +38,22 @@ EOT;
         $html = $testView->render();
 
         $this->assertContains('<title>unit testing</title>', $html);
+    }
+
+    public function testPushMeta()
+    {
+        /** @var Meta|PHPUnit_Framework_MockObject_MockObject $testMeta */
+        $testMeta = $this->createMock(Meta::class);
+        $testMeta->expects($this->any())
+            ->method('getHtml')
+            ->willReturn('<meta name="test" content="test">');
+
+        $testView = (new TestView())
+            ->pushMeta($testMeta);
+
+        $html = $testView->render();
+
+        $this->assertContains('<meta name="test" content="test">', $html);
     }
 }
 

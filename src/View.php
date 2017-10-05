@@ -16,6 +16,11 @@ abstract class View implements CodeGenerator
     private $title;
 
     /**
+     * @var array
+     */
+    private $metaTags = [];
+
+    /**
      * Sets title of this page
      *
      * @param string $title
@@ -34,9 +39,44 @@ abstract class View implements CodeGenerator
      */
     protected function getTitle()
     {
-        return $this->title
-            ? '<title>' . $this->title . '</title>'
-            : '';
+        if (!$this->title) {
+            return '';
+        }
+
+        return '<title>' . $this->title . '</title>' . PHP_EOL;
+    }
+
+    /**
+     * Adds given meta tag to this page
+     *
+     * @param Meta $metaTag
+     * @return static
+     */
+    public function pushMeta(Meta $metaTag)
+    {
+        $this->metaTags[] = $metaTag;
+        return $this;
+    }
+
+    /**
+     * Returns html code of this page's meta tags
+     *
+     * @return string
+     */
+    protected function getMeta()
+    {
+        if (!$this->metaTags) {
+            return '';
+        }
+
+        return implode(
+            PHP_EOL,
+            array_map(
+                function (Meta $metaTag) {
+                    return $metaTag->getHtml();
+                },
+                $this->metaTags)
+            ) . PHP_EOL;
     }
 
     /**
@@ -50,7 +90,7 @@ abstract class View implements CodeGenerator
 <!DOCTYPE html>
 <html>
     <head>
-        {{title}}
+        {{title}}{{meta}}
     </head>
     <body>
         
@@ -90,6 +130,7 @@ TEMP;
     {
         return [
             '{{title}}' => $this->getTitle(),
+            '{{meta}}' => $this->getMeta(),
         ];
     }
 
