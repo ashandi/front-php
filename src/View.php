@@ -3,9 +3,10 @@
 namespace Ashandi\FrontPHP;
 
 use Ashandi\FrontPHP\Contracts\CodeGenerator;
+use Ashandi\FrontPHP\Contracts\ViewBuilder;
 use Ashandi\FrontPHP\Traits\CodeGeneratorFunctionality;
 
-abstract class View implements CodeGenerator
+final class View implements CodeGenerator
 {
 
     use CodeGeneratorFunctionality;
@@ -19,6 +20,20 @@ abstract class View implements CodeGenerator
      * @var array
      */
     private $metaTags = [];
+
+    /**
+     * @var ViewBuilder
+     */
+    private $viewBuilder;
+
+    /**
+     * View constructor.
+     * @param ViewBuilder $viewBuilder
+     */
+    public function __construct(ViewBuilder $viewBuilder)
+    {
+        $this->viewBuilder = $viewBuilder;
+    }
 
     /**
      * Sets title of this page
@@ -100,25 +115,16 @@ TEMP;
     }
 
     /**
-     * Method transforms this class in html code
+     * Method builds html code of this view
      * and returns it as a string
      *
      * @return string
      */
-    public function render()
+    public function render() : string
     {
-        $this->build();
+        $this->viewBuilder->build();
 
         return $this->getHtml();
-    }
-
-    /**
-     * Method for building the page
-     * Implement this method in descendant's View
-     */
-    protected function build()
-    {
-        //TODO Implement this method in descendant
     }
 
     /**
